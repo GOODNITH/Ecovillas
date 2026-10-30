@@ -1,0 +1,3 @@
+1;1002;Zona verde principal;Residuos acumulados cerca de las canecas;29/10/2026 09:30;Pendiente
+2;1003;Parque infantil;Caneca en mal estado;29/10/2026 10:15;Solucionado
+3;1004;Senderos internos;Presencia de residuos en el camino;30/10/2026 08:45;Pendiente

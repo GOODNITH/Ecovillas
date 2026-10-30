@@ -1,0 +1,5 @@
+1;Zona verde principal;En proceso;29/10/2026 08:00
+2;Parque infantil;Limpia;29/10/2026 09:00
+3;Senderos internos;Dañada;28/10/2026 07:30
+4;Zona de contenedores;Limpia;30/10/2026 07:00
+5;Zona de parqueaderos;En proceso;No registrada

@@ -1,0 +1,3 @@
+1;2026-11-05;08:00;Zona verde principal;Guantes, bolsas y escobas;Residentes Torre 1;1001
+2;2026-11-10;09:00;Parque infantil;Bolsas y herramientas de limpieza;Residentes Torre 2;1001
+3;2026-11-15;07:30;Senderos internos;Guantes, recogedores y bolsas;Residentes Torre 3;1001

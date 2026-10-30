@@ -1,0 +1,5 @@
+1001;Carlos;Restrepo;3001112233;carlos@gmail.com;12345;Administrador
+1002;Mariana;Gomez;3002223344;mariana@gmail.com;12345;Residente
+1003;Andres;Lopez;3003334455;andres@gmail.com;12345;Residente
+1004;Laura;Martinez;3004445566;laura@gmail.com;12345;Residente
+1005;Daniel;Perez;3005556677;daniel@gmail.com;12345;Residente
