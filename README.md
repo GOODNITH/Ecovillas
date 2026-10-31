@@ -6,5 +6,5 @@ El objetivo principal de este trabajo es aplicar principios de la ingeniería de
 📁 Contenido del Repositorio
 
 El proyecto está organizado en las siguientes secciones principales:
-• Documentación del Proyecto: Contiene el documento de investigación completa
-• Prototipo en Java: Código fuente de la solución interactiva desarrollada 
+1. Documentación del Proyecto: Contiene el documento de investigación completa
+2. Prototipo en Java: Código fuente de la solución interactiva desarrollada 
