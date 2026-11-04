@@ -7,4 +7,6 @@ El objetivo principal de este trabajo es aplicar principios de la ingeniería de
 
 El proyecto está organizado en las siguientes secciones principales:
 1. Documentación del Proyecto: Contiene el documento de investigación completa
-2. Prototipo en Java: Código fuente de la solución interactiva desarrollada 
+2. Prototipo en Java: Código fuente de la solución interactiva desarrollada
+3. Evidencia de tecnica de licitacion (Entrevista y encuesta)
+
