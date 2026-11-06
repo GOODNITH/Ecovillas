@@ -33,7 +33,8 @@ public class GestionApartamentos {
     static final String[] RUTAS_USUARIOS = { "../harol-codigo/usuarios.txt", "harol-codigo/usuarios.txt",
             "usuarios.txt" }; // archivo de Usuario (carpeta de Harol), para validar relaciones
 
-    static Apartamento[] apartamentos = new Apartamento[MAX]; // arreglo con contador (siempre ordenado por id_apartamento)
+    static Apartamento[] apartamentos = new Apartamento[MAX]; // arreglo con contador (siempre ordenado por
+                                                              // id_apartamento)
     static int cantidad = 0; // contador de apartamentos registrados
     static PilaApartamento pilaEliminados = new PilaApartamento(MAX); // pila propia para deshacer
 
@@ -79,7 +80,8 @@ public class GestionApartamentos {
         return n.matches("^[A-Za-z0-9]+$");
     }
 
-    // Busca un archivo de datos del OTRO programa: prueba varias rutas y devuelve la
+    // Busca un archivo de datos del OTRO programa: prueba varias rutas y devuelve
+    // la
     // primera que exista (funciona se ejecute desde la carpeta del programa o desde
     // la carpeta que contiene a las dos). Si ninguna existe, devuelve la primera.
     static File buscarArchivo(String... rutas) {

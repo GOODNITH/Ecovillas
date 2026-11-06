@@ -87,7 +87,8 @@ public class GestionUsuarios {
         }
     }
 
-    // Busca un archivo de datos del OTRO programa: prueba varias rutas y devuelve la
+    // Busca un archivo de datos del OTRO programa: prueba varias rutas y devuelve
+    // la
     // primera que exista (funciona se ejecute desde la carpeta del programa o desde
     // la carpeta que contiene a las dos). Si ninguna existe, devuelve la primera.
     static File buscarArchivo(String... rutas) {
@@ -318,7 +319,8 @@ public class GestionUsuarios {
             return false;
         }
         if (!apartamentoExiste(u.id_apartamento)) {
-            System.out.println("No se puede deshacer: el apartamento " + u.id_apartamento + " del usuario ya no existe");
+            System.out
+                    .println("No se puede deshacer: el apartamento " + u.id_apartamento + " del usuario ya no existe");
             return false;
         }
         pilaEliminados.desapilar();
