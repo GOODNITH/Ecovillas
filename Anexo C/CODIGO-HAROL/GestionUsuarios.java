@@ -18,6 +18,7 @@
  * RN-08  Lo eliminado no se pierde: queda en la pila hasta deshacer
  * -----------------------------------------------------------
  * Criterios: CA-USU-01-01 (bueno) CA-USU-01-03 (falla) CA-USU-04-01 (bueno) CA-USU-05-04 (falla)
+ * Integridad: id_apartamento debe existir en apartamentos.txt (RNF-06; diccionario: FK a Apartamento)
  * Estructuras: Arreglo con contador . Pila propia
  * =========================================================== */
 
@@ -29,6 +30,8 @@ public class GestionUsuarios {
 
     static final int MAX = 1000; // capacidad del arreglo
     static final String ARCHIVO = "usuarios.txt"; // archivo de datos
+    static final String[] RUTAS_APARTAMENTOS = { "../CODIGO-YEIDER/apartamentos.txt", "CODIGO-YEIDER/apartamentos.txt",
+            "apartamentos.txt" }; // archivo de Apartamento (carpeta de Yeider), para validar la FK
 
     static Usuario[] usuarios = new Usuario[MAX]; // arreglo con contador (siempre ordenado por id_usuario)
     static int cantidad = 0; // contador de usuarios registrados
@@ -84,40 +87,39 @@ public class GestionUsuarios {
         }
     }
 
+    // Busca un archivo de datos del OTRO programa: prueba varias rutas y devuelve la
+    // primera que exista (funciona se ejecute desde la carpeta del programa o desde
+    // la carpeta que contiene a las dos). Si ninguna existe, devuelve la primera.
+    static File buscarArchivo(String... rutas) {
+        for (String r : rutas)
+            if (new File(r).exists())
+                return new File(r);
+        return new File(rutas[0]);
+    }
+
+    // FK id_apartamento: indica si el apartamento existe en apartamentos.txt
+    // (formato de cada línea: id_apartamento;numero_apartamento;id_torre).
+    // Si el archivo no existe, no hay apartamentos registrados y devuelve false.
+    static boolean apartamentoExiste(int id_apartamento) {
+        File f = buscarArchivo(RUTAS_APARTAMENTOS);
+        if (!f.exists())
+            return false;
+        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] c = linea.split(";", -1);
+                if (c.length == 3 && c[0].trim().equals(String.valueOf(id_apartamento)))
+                    return true;
+            }
+        } catch (IOException e) {
+            System.out.println("No se pudo leer " + f.getPath() + ": " + e.getMessage());
+        }
+        return false;
+    }
+
     // RN-04 — formato de correo válido.
     static boolean correoValido(String c) {
         return c.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    }
-
-    // RN-04 — el dominio (lo que va después de la @) debe ser gmail.com o
-    // hotmail.com, sin importar mayúsculas.
-    static boolean dominioPermitido(String c) {
-        String d = c.substring(c.indexOf('@') + 1).toLowerCase();
-        return d.equals("gmail.com") || d.equals("hotmail.com");
-    }
-
-    // Pone la primera letra de cada palabra en mayúscula y el resto en minúscula
-    // ("luis MIGUEL" -> "Luis Miguel").
-    static String capitalizar(String t) {
-        String[] palabras = t.trim().split(" +");
-        String r = "";
-        for (int i = 0; i < palabras.length; i++) {
-            if (palabras[i].isEmpty())
-                continue;
-            r += (r.isEmpty() ? "" : " ") + palabras[i].substring(0, 1).toUpperCase()
-                    + palabras[i].substring(1).toLowerCase();
-        }
-        return r;
-    }
-
-    // Cuenta cuántos dígitos tiene el teléfono (los "+", "-" y espacios no
-    // cuentan).
-    static int contarDigitos(String t) {
-        int n = 0;
-        for (int i = 0; i < t.length(); i++)
-            if (Character.isDigit(t.charAt(i)))
-                n++;
-        return n;
     }
 
     // Texto solo con letras y espacios, no vacío.
@@ -141,20 +143,12 @@ public class GestionUsuarios {
             System.out.println("Formato de correo inválido");
             return false;
         }
-        if (!dominioPermitido(correo)) {
-            System.out.println("El correo debe terminar en @gmail.com o @hotmail.com");
-            return false;
-        }
         if (buscarPorCorreo(correo, id_propio) != -1) {
             System.out.println("El correo ya está registrado");
             return false;
         }
         if (!telefono.isEmpty() && (telefono.length() > 15 || !telefonoValido(telefono))) {
             System.out.println("Formato de teléfono inválido");
-            return false;
-        }
-        if (contarDigitos(telefono) > 10) {
-            System.out.println("El teléfono puede tener máximo 10 números");
             return false;
         }
         return true;
@@ -170,9 +164,9 @@ public class GestionUsuarios {
     // (CA-USU-01-07).
     static boolean crearUsuario(int id_usuario, String nombres, String apellidos, String correo, String telefono,
             String contrasena, int id_rol, int id_apartamento) {
-        nombres = capitalizar(nombres);
-        apellidos = capitalizar(apellidos);
-        correo = correo.trim().toLowerCase();
+        nombres = nombres.trim();
+        apellidos = apellidos.trim();
+        correo = correo.trim();
         telefono = telefono.trim();
         if (cantidad == MAX) {
             System.out.println("No hay espacio: el arreglo está lleno");
@@ -186,24 +180,12 @@ public class GestionUsuarios {
             System.out.println("El id_usuario " + id_usuario + " ya existe");
             return false;
         }
-        if (nombres.isEmpty()) {
-            System.out.println("Falta el campo obligatorio: nombres");
+        if (nombres.isEmpty() || apellidos.isEmpty() || contrasena.isEmpty() || id_rol <= 0 || id_apartamento <= 0) {
+            System.out.println("Faltan campos obligatorios: nombres, apellidos, correo, contraseña, rol y apartamento");
             return false;
         }
-        if (apellidos.isEmpty()) {
-            System.out.println("Falta el campo obligatorio: apellidos");
-            return false;
-        }
-        if (contrasena.isEmpty()) {
-            System.out.println("Falta el campo obligatorio: contraseña");
-            return false;
-        }
-        if (id_rol <= 0) {
-            System.out.println("El rol no es válido: escriba Administrador, Residente o el número del rol");
-            return false;
-        }
-        if (id_apartamento <= 0) {
-            System.out.println("El apartamento no es válido: escriba el número (id_apartamento)");
+        if (!apartamentoExiste(id_apartamento)) {
+            System.out.println("El apartamento no existe");
             return false;
         }
         if (nombres.length() > 80 || apellidos.length() > 80 || !soloLetras(nombres) || !soloLetras(apellidos)) {
@@ -241,7 +223,7 @@ public class GestionUsuarios {
     static boolean actualizarUsuario(int id_usuario, String telefono, String correo, int id_rol, int id_apartamento,
             String estado) {
         telefono = telefono.trim();
-        correo = correo.trim().toLowerCase();
+        correo = correo.trim();
         estado = estado.trim();
         int pos = buscarPosicion(id_usuario);
         if (pos == -1) {
@@ -249,8 +231,11 @@ public class GestionUsuarios {
             return false;
         }
         if (correo.isEmpty() || id_rol <= 0 || id_apartamento <= 0 || estado.isEmpty()) {
-            System.out.println(
-                    "Faltan campos obligatorios o no son válidos: correo, rol (número), apartamento (número) y estado");
+            System.out.println("Faltan campos obligatorios: correo, rol, apartamento y estado");
+            return false;
+        }
+        if (!apartamentoExiste(id_apartamento)) {
+            System.out.println("El apartamento no existe");
             return false;
         }
         if (!estado.equalsIgnoreCase("Activo") && !estado.equalsIgnoreCase("Inactivo")) {
@@ -332,6 +317,10 @@ public class GestionUsuarios {
             System.out.println("No se puede deshacer: el id o el correo ya los usa otro usuario");
             return false;
         }
+        if (!apartamentoExiste(u.id_apartamento)) {
+            System.out.println("No se puede deshacer: el apartamento " + u.id_apartamento + " del usuario ya no existe");
+            return false;
+        }
         pilaEliminados.desapilar();
         insertarOrdenado(u);
         System.out.println("Se restauró el usuario " + u.id_usuario + " (" + u.nombres + " " + u.apellidos + ")");
@@ -387,22 +376,6 @@ public class GestionUsuarios {
         }
     }
 
-    // Lee el rol: acepta "Administrador" (1), "Residente" (2) o directamente el
-    // número; 0 si no es válido.
-    static int leerRol(String pregunta) {
-        System.out.print(pregunta);
-        String t = sc.nextLine().trim();
-        if (t.equalsIgnoreCase("administrador"))
-            return 1;
-        if (t.equalsIgnoreCase("residente"))
-            return 2;
-        try {
-            return Integer.parseInt(t);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
-
     static String leerTexto(String pregunta) {
         System.out.print(pregunta);
         return sc.nextLine();
@@ -434,8 +407,7 @@ public class GestionUsuarios {
                     }
                     String nom = leerTexto("nombres: "), ape = leerTexto("apellidos: "), cor = leerTexto("correo: ");
                     String tel = leerTexto("telefono (opcional): "), con = leerTexto("contrasena: ");
-                    int rol = leerRol("id_rol (Administrador/Residente o número): "),
-                            apto = leerEntero("id_apartamento: ");
+                    int rol = leerEntero("id_rol: "), apto = leerEntero("id_apartamento: ");
                     if (crearUsuario(id, nom, ape, cor, tel, con, rol, apto))
                         guardarArchivo();
                     break;
@@ -452,8 +424,7 @@ public class GestionUsuarios {
                         break;
                     String tel = leerTexto("nuevo telefono (vacío = sin teléfono): "),
                             cor = leerTexto("nuevo correo: ");
-                    int rol = leerRol("nuevo id_rol (Administrador/Residente o número): "),
-                            apto = leerEntero("nuevo id_apartamento: ");
+                    int rol = leerEntero("nuevo id_rol: "), apto = leerEntero("nuevo id_apartamento: ");
                     String est = leerTexto("estado (Activo/Inactivo): ");
                     if (actualizarUsuario(id, tel, cor, rol, apto, est))
                         guardarArchivo();
