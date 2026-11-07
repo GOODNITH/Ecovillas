@@ -436,4 +436,30 @@ public class GestionUsuarios {
                     int id = leerEntero("id_usuario a eliminar: ");
                     if (consultarUsuario(id) == null)
                         break;
-                    String r 
+                    String r = leerTexto("¿Confirma eliminar? (s/n): ").trim();
+                    if (r.equalsIgnoreCase("s")) {
+                        if (eliminarUsuario(id) != null)
+                            guardarArchivo();
+                    } else
+                        System.out.println("Operación cancelada, no se hizo ningún cambio");
+                    break;
+                }
+                case 5: {
+                    String f = leerTexto("Filtrar por estado (Activo/Inactivo, Enter = todos): ").trim();
+                    listarUsuarios(f.isEmpty() ? null : f);
+                    break;
+                }
+                case 6:
+                    if (deshacer())
+                        guardarArchivo();
+                    break;
+                case 0:
+                    guardarArchivo();
+                    System.out.println("Datos guardados en " + ARCHIVO + ". Hasta luego.");
+                    break;
+                default:
+                    System.out.println("Opción no válida");
+            }
+        } while (op != 0);
+    }
+}
