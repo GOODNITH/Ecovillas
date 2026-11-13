@@ -1,7 +1,0 @@
-1;Yeider Andres;Solar Montes;yeider.solar@gmail.com;3001234567;059a50ce956b7ec61527c7ecc0c55b5a009dc54ab4acddce8852b46baa2aba30;Activo;1;101
-2;Harol Stiven;Holguin Ospina;harol.holguin@gmail.com;3109876543;059a50ce956b7ec61527c7ecc0c55b5a009dc54ab4acddce8852b46baa2aba30;Activo;1;102
-3;Maria Fernanda;Lopez Diaz;maria.lopez@gmail.com;;86b4d07558aaafc1d468cb56efeb860cc1f994d9265feb03cda1653817585f8d;Activo;2;201
-4;Carlos Andres;Ramirez Gil;carlos.ramirez@hotmail.com;3205551234;86b4d07558aaafc1d468cb56efeb860cc1f994d9265feb03cda1653817585f8d;Activo;2;305
-5;Luisa Fernanda;Pineda Ruiz;luisa.pineda@gmail.com;3151112233;86b4d07558aaafc1d468cb56efeb860cc1f994d9265feb03cda1653817585f8d;Inactivo;2;408
-6;Juan David;Castano Mejia;juan.castano@gmail.com;;86b4d07558aaafc1d468cb56efeb860cc1f994d9265feb03cda1653817585f8d;Activo;2;512
-7;Harol;Holguin;luismigel@gmail.com;3146728110;2f5e9774d72204fc47bcae4dca2194d8c818879b057b3a192e49db75d08fffea;Activo;2;102
